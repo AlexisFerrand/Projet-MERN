@@ -59,19 +59,19 @@ userSchema.pre("save", async function(next) {
 
 
 
-userSchema.statics.login = async function(email, password) {
-    const user = await this.findOne({email});
-    if(user){
-        const auth = await bcrypt.compare(password, user.password);
-        console.log(`The passwords are the same:` +' '+ auth);
-        // Ne fonctionne pas 
-        if (auth) {
-            return auth;
-        }  
-        throw Error('incorrect password');
+userSchema.statics.login = async function (email, password) {
+    const user = await this.findOne({ email });
+    console.log(user);
+    if (user) {
+      const auth = await bcrypt.compare(password, user.password);
+      console.log(auth);
+      if (auth) {
+        return user;
+      }
+      throw Error('Incorrect password');
     }
-    throw Error('incorrect email');
-};
+    throw Error('Incorrect email');
+  };
 
 
 const UserModel = mongoose.model("user", userSchema);
